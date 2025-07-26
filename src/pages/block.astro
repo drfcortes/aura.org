@@ -1,89 +1,57 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import JsonActions from '../components/JsonActions.jsx';
+import "../styles.css";
 
-const jsonBlock = `
-{
-  "aura_version": "0.1",           ← Protocol version
-  "model": "GPT-4o",               ← Name of the AI model used
-  "provider": "OpenAI",            ← Provider or platform
-  "prompt": "Summarize the paper", ← Human input that triggered generation
-  "timestamp": "2025-07-25T10:32Z",← UTC time of generation
-  "user_edit": true,               ← Whether the content was post-edited
-  "content_hash": "a0f4...dc82",   ← Hash of final output
-  "license": "CC-BY-4.0",          ← Licensing scheme
-  "notes": "Content edited",       ← Optional additional notes
-  "uid": "AURA-2025-000001"        ← Unique content identifier
-}
-`;
+const jsonBlock = `{
+  "aura_version": "0.1",
+  "model": "GPT-4o",
+  "provider": "OpenAI",
+  "prompt": "Summarize the paper",
+  "timestamp": "2025-07-25T10:32Z",
+  "user_edit": true,
+  "content_hash": "a0f4...dc82",
+  "license": "CC-BY-4.0",
+  "notes": "Content edited",
+  "uid": "AURA-2025-000001"
+}`;
 
 const escapedJSON = jsonBlock.replace(/</g, '&lt;');
+const jsonData = JSON.parse(jsonBlock);
 ---
+
 <Layout>
     <main class="p-8 max-w-4xl mx-auto">
         <h1 class="text-3xl font-bold text-blue-800 mb-4">AURA JSON Block</h1>
 
         <p class="text-gray-700 mb-6">
             This is the minimal verifiable structure used to declare AI involvement in content creation.
-            Each field is designed to support traceability, reproducibility, and institutional acknowledgment.
         </p>
 
-        <!-- Render JSON block inside a styled wrapper -->
+        <!-- JSON block render -->
         <div class="bg-gray-100 p-4 rounded text-sm overflow-auto text-gray-800 font-mono whitespace-pre">
             <div set:html={escapedJSON}></div>
         </div>
-        <div class="mt-4 flex gap-4">
-            <button
-                    class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-                    onclick="copyJSON()"
-            >
-                📋 Copy JSON
-            </button>
 
-            <button
-                    class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
-                    onclick="downloadJSON()"
-            >
-                ⬇️ Download JSON
-            </button>
-        </div>
+        <!-- Componente React funcional -->
+        <JsonActions client:load jsonData={jsonData} />
+
+        <!-- Explicaciones -->
+        <ul class="mt-6 text-sm text-gray-600 list-disc list-inside">
+            <li><code>aura_version</code>: Protocol version</li>
+            <li><code>model</code>: Name of the AI model used</li>
+            <li><code>provider</code>: Platform or service that provided the AI</li>
+            <li><code>prompt</code>: Human input that triggered generation</li>
+            <li><code>timestamp</code>: UTC time of generation</li>
+            <li><code>user_edit</code>: Indicates if post-editing was done</li>
+            <li><code>content_hash</code>: Hash of final content for integrity</li>
+            <li><code>license</code>: Usage license</li>
+            <li><code>notes</code>: Additional human notes</li>
+            <li><code>uid</code>: Unique content identifier</li>
+        </ul>
 
         <p class="mt-6 text-gray-700">
             The <code>content_hash</code> ensures integrity; the <code>prompt</code> and <code>model</code> identify the generative event.
-            The <code>uid</code> allows external referencing. This block may be attached to digital artifacts, included in metadata, or submitted as part of a citation index.
         </p>
-        <script>
-            const jsonData = {
-                aura_version: "0.1",
-                model: "GPT-4o",
-                provider: "OpenAI",
-                prompt: "Summarize the paper",
-                timestamp: "2025-07-25T10:32Z",
-                user_edit: true,
-                content_hash: "a0f4...dc82",
-                license: "CC-BY-4.0",
-                notes: "Content edited",
-                uid: "AURA-2025-000001"
-            };
-
-            function copyJSON() {
-                const jsonString = JSON.stringify(jsonData, null, 2);
-                navigator.clipboard.writeText(jsonString).then(() => {
-                    alert("JSON copied to clipboard!");
-                }).catch(err => {
-                    console.error("Copy failed", err);
-                });
-            }
-
-            function downloadJSON() {
-                const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: "application/json" });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement("a");
-                a.href = url;
-                a.download = "aura_block.json";
-                a.click();
-                URL.revokeObjectURL(url);
-            }
-        </script>
-
     </main>
 </Layout>

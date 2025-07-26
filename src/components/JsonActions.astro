@@ -1,0 +1,42 @@
+---
+const { jsonData } = Astro.props;
+---
+
+<div class="mt-6 flex gap-4">
+    <button
+            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+            id="copy-btn"
+    >
+        📋 Copy JSON
+    </button>
+
+    <button
+            class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+            id="download-btn"
+    >
+        ⬇️ Download JSON
+    </button>
+</div>
+
+<script type="module" is:client="load">
+    const jsonData = {{ JSON.stringify(jsonData) }};
+
+    document.getElementById('copy-btn')?.addEventListener('click', () => {
+        const jsonString = JSON.stringify(jsonData, null, 2);
+        navigator.clipboard.writeText(jsonString).then(() => {
+            alert("JSON copied to clipboard!");
+        }).catch(err => {
+            console.error("Copy failed", err);
+        });
+    });
+
+    document.getElementById('download-btn')?.addEventListener('click', () => {
+        const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "aura_block.json";
+        a.click();
+        URL.revokeObjectURL(url);
+    });
+</script>
