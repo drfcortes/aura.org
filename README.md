@@ -1,46 +1,38 @@
-# Astro Starter Kit: Basics
+# AURA Protocol — Attribution & Usage Reporting for AI
 
-```sh
-npm create astro@latest -- --template basics
-```
+**Version 0.1 – July 2025**
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+AURA is an open protocol for documenting, attributing, and verifying the use of generative artificial intelligence in the creation or editing of content. It is designed to promote transparency, reproducibility, and authorship integrity in an age where AI systems can produce human-like output at scale.
 
-## 🚀 Project Structure
+---
 
-Inside of your Astro project, you'll see the following folders and files:
+## 🌐 Why AURA?
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
-```
+While AI-generated content is rapidly becoming mainstream, there is no established technical or ethical framework for reporting its origin, model usage, or degree of human intervention. AURA provides a transparent and verifiable system to:
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+- Standardize the citation of AI involvement.
+- Generate persistent metadata for content provenance.
+- Encourage responsible use of generative models.
+- Avoid disincentivizing transparency or intellectual honesty.
 
-## 🧞 Commands
+---
 
-All commands are run from the root of the project, from a terminal:
+## 📦 What is the AURA Block?
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+The AURA Block is a structured metadata unit (in JSON or YAML) that captures key information about how a piece of content was generated or modified with AI tools.
 
-## 👀 Want to learn more?
+### Example
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+```json
+{
+  "aura_version": "0.1",
+  "uid": "AURA-2025-000001",
+  "timestamp": "2025-07-11T23:10Z",
+  "model": "ChatGPT 4.0",
+  "provider": "OpenAI",
+  "prompt": "Describe the impact of AI on education",
+  "user_edit": false,
+  "content_hash": "a0f4c9bd7e...",
+  "license": "CC-BY-4.0",
+  "notes": "Generated content with no user revision."
+}
